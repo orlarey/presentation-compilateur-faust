@@ -91,10 +91,17 @@ toc: false
 # Autres backends
 
 - LLVM IR : génération d’un « module LLVM » (fichiers dans compiler/generator/llvm)
-
 - WASM : génération d’un « module WASM » (fichiers dans compiler/generator/wasm)
-
 - ...
+
+
+
+# Génération de code pour l'embarqué
+
+- mode `-os` (one sample) avec :
+
+  - fonction `compute`… qui calcule un seul échantillon
+  - séparation des calculs faits au control-rate et à sample-rate
 
   
 
@@ -110,6 +117,14 @@ toc: false
 # Instrumentation avec le backend d'Interprétation
 
 - traduction FIR => Faust Byte Code (FBC)
+
 - machine virtuelle d’interprétation du FBC (avec piles et zones mémoires DSP integer/real)
-- instrumentation possible
+
+- instrumentation du code possible : 
+
+  - détection de calcul flottants problématiques (NaN, INF...) ou entiers en dehors de l'intervalle maximum, division par zéro
+
+  - accès incorrect à la mémoire : test de la correction du code généré
+
+    
 
