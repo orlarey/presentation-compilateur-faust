@@ -29,6 +29,10 @@ toc: false
 
 # Arbres
 
+Arbres non-mutables, hash-consing, DAG, propriétés mutables. 
+
+Propriété des arbres : $t_1 = t_2 \Leftrightarrow M(t_1) = M(t_2)$ 
+
 - symbols : tlib/symbol.hh+cpp
 - nodes : tlib/node.hh+cpp
 - trees : tlib/tree.hh+cpp, 2 types de recursivité (de Bruijn+ symbolique)
@@ -95,7 +99,25 @@ toc: false
   
 # Parsing Lex/Yacc
 
+- `parser/faustlexer.l`
+- `parser/faustparser.y`
+- `libcode.cpp/parseSourceFiles()`
+- `parser/sourcereader.hh/SourceReader`
+- environnement
 - Chargeur récursif, utilisation des url
+
+# Parsing
+
+Parsing de l'expression `library("math.lib")` :
+
+    } else if (isBoxLibrary(exp, label)) {
+	const char* fname = tree2str(label);
+	Tree eqlst = gGlobal->gReader.expandList(gGlobal->gReader.getList(fname));
+	Tree res   = closure(boxEnvironment(), gGlobal->nil, gGlobal->nil,
+				      pushMultiClosureDefs(eqlst, gGlobal->nil, gGlobal->nil));
+	setDefNameProperty(res, label);
+	return res;
+
 
 # Structure d'une primitive processeur de signaux
 bla bla
