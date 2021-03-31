@@ -30,10 +30,10 @@ toc: false
 # Traduction des signaux en code impératif (FIR: Faust Imperative Representation)
 
 - gestion mémoire: variables (stack/struct…), tableaux, lecture/écriture
-- calculs arithmétiques (unaires/binaires)
+- calculs arithmétiques (unaires/binaires), fonctions externes
 - structure de contrôle : for, while, if, switch/case, select…
-- structures de données 
-- fonctions
+- creation de structures de données 
+- creation de fonctions
 - instructif spéciales pour l'UI (construction de sliders/buttons)
 
 # Implémentation
@@ -43,7 +43,7 @@ toc: false
 - mécanisme de clonage d’une expression
 - mécanisme de visiteur pour parcourir une expression
 
-# Transformation FIR => FIR
+# Transformations FIR => FIR
 
 - renomage ou changement de type (stack/struct...) de variables
 - suppressions de cast inutiles 
@@ -55,10 +55,10 @@ toc: false
 # Traduction signaux =>FIR
 
 - classe **Container** : 
-  - remplissage progressif du code FIR pour générer la structure DSP, les différentes fonctions (`init`, `compute`…)
+  - remplissage progressif du code FIR pour générer la structure DSP et les différentes fonctions (`init`, `compute`…)
   - sous-classes pour la génération des tables
 - classe **InstructionsCompiler** pour la génération de code scalaire
-- classe **DAGInstructionsCompiler** pour la génération de code vectorien (DAG de boucles)
+- classe **DAGInstructionsCompiler** pour la génération à partir du DAG de boucles : 
   - code vectoriel (boucles reliées par des buffers)
   - code vectoriel et parallèle : pragma pour OpenMP (C/C++) et Work Stealing Scheduler
 - fichiers : 
