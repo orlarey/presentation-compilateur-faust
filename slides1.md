@@ -34,7 +34,7 @@ toc: false
 - structure de contrôle : for, while, if, switch/case, select…
 - creation de structures de données 
 - creation de fonctions
-- instructif spéciales pour l'UI (construction de sliders/buttons)
+- instructions spéciales pour l'UI (construction de sliders/buttons)
 
 # Implémentation
 
