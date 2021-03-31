@@ -110,17 +110,40 @@ Propriété des arbres : $t_1 = t_2 \Leftrightarrow M(t_1) = M(t_2)$
 
 Parsing de l'expression `library("math.lib")` :
 
-    } else if (isBoxLibrary(exp, label)) {
+	(G := gGlobal)
 	const char* fname = tree2str(label);
-	Tree eqlst = gGlobal->gReader.expandList(gGlobal->gReader.getList(fname));
-	Tree res   = closure(boxEnvironment(), gGlobal->nil, gGlobal->nil,
-				      pushMultiClosureDefs(eqlst, gGlobal->nil, gGlobal->nil));
+	Tree eqlst = G->gReader.expandList(G->gReader.getList(fname));
+	Tree res   = closure(boxEnvironment(), G->nil, G->nil,
+				      pushMultiClosureDefs(eqlst, G->nil, G->nil));
 	setDefNameProperty(res, label);
 	return res;
 
 
-# Structure d'une primitive processeur de signaux
-bla bla
+# Environnements
+
+Les définitions d'un programme sont organisées en environnements par `pushMultiClosureDefs()` :
+
+![](images/faust-def-env.pdf)
+
+
+# Evaluation
+
+Evaluation de la définition de `process` dans l'environnement résultant de la lecture des fichiers sources (voir `eval.cpp`) :
+
+	Tree evalprocess(Tree eqlist)
+	{
+		Tree b=a2sb(eval(boxIdent(G->gProcessName.c_str()), G->nil,
+					pushMultiClosureDefs(eqlist, G->nil, G->nil)));
+
+		if (G->gSimplifyDiagrams) {
+			b = boxSimplification(b);
+		}
+
+		return b;
+	}
+
+
+
 # Propagation symbolique
 bla bla
 ![](examples/ex1.pdf)
