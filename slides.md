@@ -43,7 +43,7 @@ Propriété des arbres : $t_1 = t_2 \Leftrightarrow M(t_1) = M(t_2)$
 # Arbres : exemple de la composition séquentielle `A:B`
 
 	gGlobal->BOXSEQ = symbol("BoxSeq");
-
+	
 	Tree boxSeq(Tree x, Tree y)
 	{
 		return tree(gGlobal->BOXSEQ, x, y);
@@ -56,16 +56,16 @@ Propriété des arbres : $t_1 = t_2 \Leftrightarrow M(t_1) = M(t_2)$
 
 # Arbres : récursivité _de Bruijn_
 
-	
+
 	Tree rec(Tree body)
 	{    return tree(gGlobal->DEBRUIJN, body); }
-
+	
 	bool isRec(Tree t, Tree& body)
 	{	return isTree(t, gGlobal->DEBRUIJN, body); }
-
+	
 	Tree ref(int level)
 	{	return tree(gGlobal->DEBRUIJNREF, tree(level)); }
-
+	
 	bool isRef(Tree t, int& level)
 	{
 		Tree u;
@@ -83,20 +83,21 @@ Propriété des arbres : $t_1 = t_2 \Leftrightarrow M(t_1) = M(t_2)$
 		Tree t = tree(gGlobal->SYMREC, var);
 		t->setProperty(gGlobal->RECDEF, body);
 		return t; }
-
+	
 	bool isRec(Tree t, Tree& var, Tree& body) {
 		if (isTree(t, gGlobal->SYMREC, var)) {
 			body = t->getProperty(gGlobal->RECDEF);
 			return true;
 		} else {
 			return false; } }
-
+	
 	Tree ref(Tree id) { return tree(gGlobal->SYMREC, id); }
-
+	
 	bool isRef(Tree t, Tree& v) { 
 		return isTree(t, gGlobal->SYMREC, v); }
 
   
+
 # Parsing Lex/Yacc
 
 - `parser/faustlexer.l`
@@ -134,11 +135,11 @@ Evaluation de la définition de `process` dans l'environnement résultant de la 
 	{
 		Tree b=a2sb(eval(boxIdent(G->gProcessName.c_str()), G->nil,
 					pushMultiClosureDefs(eqlist, G->nil, G->nil)));
-
+	
 		if (G->gSimplifyDiagrams) {
 			b = boxSimplification(b);
 		}
-
+	
 		return b;
 	}
 
@@ -146,7 +147,7 @@ Evaluation de la définition de `process` dans l'environnement résultant de la 
 
 	repeat(1,f) = f;
 	repeat(n,f) = f <: _, repeat(n-1,f) :> _;
-
+	
 	N = 6/2;
 	FX = mem;
 	process = repeat(N,FX);
@@ -215,12 +216,12 @@ En réalité, on ne calcule pas réellement l'intervalle d'un signal récursif, 
 - $J = \bigcup\limits_{i=0}^{\infty} J_{i}$, $X = \bigcup\limits_{i=0}^{\infty} X_{i}$
   
 - $J \subseteq I=F([0,0]\cup I,X)$
- 
+
 # Traitement des signaux avant la traduction en FIR
 
     Tree L1 = deBruijn2Sym(LS);  
     typeAnnotation(L1, gGlobal->gLocalCausalityCheck);
- 	SignalPromotion SP;
+    SignalPromotion SP;
     Tree L1b = SP.mapself(L1);
     Tree L2 = simplify(L1b);  // simplify by executing every computable operation
     SignalConstantPropagation SK;
@@ -243,34 +244,41 @@ En réalité, on ne calcule pas réellement l'intervalle d'un signal récursif, 
 - `(s@n)@m` $\rightarrow$ `s@(n+m)`, si `n` est constant
 - `(s+s)` $\rightarrow$ `2*s`
 - `(s*s)` $\rightarrow$ `s^2`
- 
 
 # Traduction des signaux en code impératif (FIR: Faust Imperative Representation)
 
-- gestion mémoire: variables (stack/struct…), tableaux, lecture/écriture
-- calculs arithmétiques (unaires/binaires), fonctions externes
-- structure de contrôle : for, while, if, switch/case, select…
-- creation de structures de données 
-- creation de fonctions
-- instructions spéciales pour l'UI (construction de sliders/buttons)
+Langage générique intermédiaire avant la génération du code final :
+
+- gestion mémoire: **variables** (`stack/struct`…), **tableaux**, **lecture/écriture**
+- **calculs arithmétiques** (unaires/binaires), fonctions externes
+- structure de contrôle : `for`, `while`, `if`, `switch/case`, `select`…
+- création de **structures de données** 
+- création de **fonctions**
+- instructions spéciales pour **générer les controlleurs** : construction de `sliders/buttons/bargraph`
 
 # Implémentation
 
-- notions de type, values et statements
+Classes pour décrire et manipuler le FIR:
+
+- notions de **type**, **values** (le résultat d'un calcul) et **statements** (opération à *effet de bord* )
 - construction d'expressions (avec la classe **InstBuilder**)
-- mécanisme de clonage d’une expression
-- mécanisme de visiteur pour parcourir une expression
+- mécanisme de **clonage** d’une expression
+- mécanisme de **visiteur** pour parcourir une expression
 
 # Transformations FIR => FIR
 
-- renomage ou changement de type (stack/struct...) de variables
+Exemples de transformations:
+
+- renomage ou changement de type de variables, example avec `stack => struct`
 - suppressions de cast inutiles 
 - inlining de fonctions
 - fichiers : 
   - compiler/generator/instructions.hh+cpp
   - compiler/generator/fir_to_fir.hh+cpp
 
-# Traduction signaux =>FIR
+# Traduction signaux => FIR
+
+Les signaux de sortie sont transformés en expressions FIR avec les classes suivantes:
 
 - classe **Container** : 
   - remplissage progressif du code FIR pour générer la structure DSP et les différentes fonctions (`init`, `compute`…)
@@ -286,11 +294,16 @@ En réalité, on ne calcule pas réellement l'intervalle d'un signal récursif, 
 
 # Génération du code par le backend choisi
 
+Chaque backend traduit le code FIR dans le langage cible, en tenant compte de ses particularités:
+
 - traduction du FIR vers le langage cible
 - utilise éventuellement des opérations FIR => FIR
-- utilise le mécanisme de visiteur
+- code  pour générer la structure de la classe, du module, etc.
+- utilise le mécanisme de visiteur pour convertir chaque expression FIR
 
 # Backends textuels
+
+Les backends textuels générent du texte (un `iostream` en C++) :
 
 - C : génération de structure de données et fonctions (fichiers dans compiler/generator/c)
 
@@ -300,7 +313,7 @@ En réalité, on ne calcule pas réellement l'intervalle d'un signal récursif, 
 
 - Rust : génération d'un type et de méthodes (fichiers dans compiler/generator/rust)
 
-- SOUL : génération d'un processor(fichiers dans compiler/generator/soul)
+- SOUL : génération d'un processor (fichiers dans compiler/generator/soul)
 
 - ...
 
@@ -308,39 +321,45 @@ En réalité, on ne calcule pas réellement l'intervalle d'un signal récursif, 
 
 # Autres backends
 
-- LLVM IR : génération d’un « module LLVM » (fichiers dans compiler/generator/llvm)
-- WASM : génération d’un « module WASM » (fichiers dans compiler/generator/wasm)
+Ces backends permettent de générer du code ensuite compilable en mémoire (LLVM JIT et WASM JIT) :
+
+- LLVM IR : génération d’un « module LLVM » , sous la forme de structures de données en mémoire, à l'aide des librairies LLVM (fichiers dans compiler/generator/llvm)
+- WASM : génération d’un « module WASM » (fichiers dans compiler/generator/wasm), sous la forme d'un d'un flux binaire, à l'aide de quelques structure de données supplémentaires
 - ...
 
-
-
 # Génération de code pour l'embarqué
+
+Certains backends ont des modes de génération particuliers:
 
 - mode `-os` (one sample) avec :
 
   - fonction `compute`… qui calcule un seul échantillon
-  - séparation des calculs faits au control-rate et à sample-rate
+  - séparation des calculs faits au `control-rate` et au `sample-rate`
 
   
 
-# Débogage avec le backend FIR
+# Déboggage avec le backend FIR
+
+Outil utilisé pour le déboggage du FIR et de l'implémentation des backends :
 
 - version textuelle du langage FIR :
 
-  - avec type des variables
-  - quelques statistiques sur le code (taille du DSP, nombre d'opérations utilisées)
+  - avec type des variables (`stack, struct, global`)
+  - quelques statistiques sur le code : taille du DSP, nombre d'opérations de chaque type utilisées (accès mémoire, calculs arithmétiques...)
 
   
 
 # Instrumentation avec le backend d'Interprétation
 
+Autre backend pour générer du code exécutable en mémoire:
+
 - traduction FIR => Faust Byte Code (FBC)
 
-- machine virtuelle d’interprétation du FBC (avec piles et zones mémoires DSP integer/real)
+- machine virtuelle d’interprétation du FBC (avec piles et zones mémoires DSP `integer/real`)
 
 - instrumentation du code possible : 
 
-  - détection de calcul flottants problématiques (NaN, INF...) ou entiers en dehors de l'intervalle maximum, division par zéro
+  - détection de calculs flottants problématiques (`NaN`, `INF`...) ou entiers en dehors de l'intervalle maximum, division par zéro...
 
   - accès incorrect à la mémoire : test de la correction du code généré
 
