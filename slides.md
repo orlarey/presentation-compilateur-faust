@@ -176,9 +176,6 @@ Le but de la propagation symbolique est d'exprimer les signaux de sortie en fonc
 
 ![](graphs/ex2.pdf)
 
-# Normalisation des signaux
-
-
 # Types des signaux
 
 Type d'un signal $s$ = Variabilité $\times$ Nature $\times$ Calculabilité
@@ -218,4 +215,32 @@ En réalité, on ne calcule pas réellement l'intervalle d'un signal récursif, 
 - $J = \bigcup\limits_{i=0}^{\infty} J_{i}$, $X = \bigcup\limits_{i=0}^{\infty} X_{i}$
   
 - $J \subseteq I=F([0,0]\cup I,X)$
+ 
+# Traitement des signaux avant la traduction en FIR
+
+    Tree L1 = deBruijn2Sym(LS);  
+    typeAnnotation(L1, gGlobal->gLocalCausalityCheck);
+ 	SignalPromotion SP;
+    Tree L1b = SP.mapself(L1);
+    Tree L2 = simplify(L1b);  // simplify by executing every computable operation
+    SignalConstantPropagation SK;
+    Tree L2b = SK.mapself(L2);
+    Tree L3 = privatise(L2b);  // Un-share tables with multiple writers
+    conditionAnnotation(L3);
+    recursivnessAnnotation(L3); // Annotate L3 with recursivness information
+    typeAnnotation(L3, true);   // Annotate L3 with type information
+    sharingAnalysis(L3);        // annotate L3 with sharing count
+    fOccMarkup = new old_OccMarkup(fConditionProperty);
+    fOccMarkup->mark(L3);  // annotate L3 with occurrences analysis
+    return L3;
+
+# Exemple de règles de normalisation
+
+- `s@0` $\rightarrow$ `s`
+- `0@d` $\rightarrow$ `0`
+- `(k*s)@d` $\rightarrow$ `k*(s@d)`
+- `(s/k)@d` $\rightarrow$ `(s@d)/k`
+- `(s@n)@m` $\rightarrow$ `s@(n+m)`, si `n` est constant
+- `(s+s)` $\rightarrow$ `2*s`
+- `(s*s)` $\rightarrow$ `s^2`
  
