@@ -142,11 +142,80 @@ Evaluation de la définition de `process` dans l'environnement résultant de la 
 		return b;
 	}
 
+# Exemple d'évaluation
+
+	repeat(1,f) = f;
+	repeat(n,f) = f <: _, repeat(n-1,f) :> _;
+
+	N = 6/2;
+	FX = mem;
+	process = repeat(N,FX);
+
+# Forme Normale
+
+Le résultat de l'évaluation est un circuit _en forme normale_ ou ne subsiste qu'une composition de primitives : 
+
+	mem <: _, (mem <: _, mem :> _) :> _
+
+Le diagramme SVG est la représentation graphique (éventuellement hiérarchisée) de la forme normale :
+
+![](examples/ex2.pdf)
+
+# Les abstractions restantes (non appliquées) sont transformées en routage
+
+Exemple :
+
+	rsub(x,y,z) = y - x*z;
+	process = rsub(0.5);
+
+![](examples/ex4.pdf)
+
+# Propagation Symbolique
+
+Le but de la propagation symbolique est d'exprimer les signaux de sortie en fonction des signaux d'entrée.
+
+![](graphs/ex2.pdf)
+
+# Normalisation des signaux
 
 
-# Propagation symbolique
-bla bla
-![](examples/ex1.pdf)
+# Types des signaux
+
+Type d'un signal $s$ = Variabilité $\times$ Nature $\times$ Calculabilité
+
+- **Variabilité** : $K$ (constant) $\subset$ $B$ (bloc/contrôle) $\subset$ S (sample)
+- **Nature** : $Z$ (entier) $\subset$  $R$ (réel)
+- **Calculabilité** : $C$ (compilation) $\subset$  $I$ (initialisation) $\subset$  $X$ (exécution)
 
 
+# Les types forment un treillis 
 
+![](images/types-lattice2.pdf)
+
+# Type d'un signal, informations additionnelles
+
+- **Vectorabilité** : $V\subset\widehat{V}$ peut être calculé en parallèle ou pas
+- **Booléen** : $B\subset\widehat{B}$ représente un signal booléen ou pas
+- **Intervalle** : les valeurs du signal $s(t)$ sont contenues dans l'intervalle $[l,h]$:  $\forall t\in\mathbb{N}, l \leq s(t) \leq h$
+  
+
+# Type du signal produit par `(1 : (+ : min(3)) ~ _)`
+
+$[\![$ `1 : (+ : min(3)) ~ _` $]\!] = ()\rightarrow z$
+
+![](examples/ex1-annotated.pdf)
+
+
+Type de $z(t) : SZC\widehat{V}\widehat{B}[1,3]$
+
+# Intervalle d'un signal récursif
+
+En réalité, on ne calcule pas réellement l'intervalle d'un signal récursif, on renvoie simplement $[-\infty,+\infty]$. Ce qu'il faudrait faire :
+
+![](examples/ex2-annotated.pdf)
+
+- $J_0=F([0,0],X_0)$, $J_1=F(J_0,X_1)$, \ldots, $J_n=F(J_{n-1},X_n)$
+- $J = \bigcup\limits_{i=0}^{\infty} J_{i}$, $X = \bigcup\limits_{i=0}^{\infty} X_{i}$
+  
+- $J \subseteq I=F([0,0]\cup I,X)$
+ 

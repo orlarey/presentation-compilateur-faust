@@ -3,6 +3,7 @@ all: slides.pdf slides1.pdf
 
 slides.pdf : slides.md examples/*.dsp
 	make -C examples
+	make -C graphs
 	pandoc --to=beamer --standalone --output=slides.pdf slides.md
 
 slides1.pdf : slides1.md examples/*.dsp
@@ -11,3 +12,4 @@ slides1.pdf : slides1.md examples/*.dsp
 clean:
 	rm -f slides.pdf slides1.pdf
 	make -C examples clean
+	make -C graphs clean
