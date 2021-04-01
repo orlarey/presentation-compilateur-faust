@@ -98,6 +98,9 @@ Propriété des arbres : $t_1 = t_2 \Leftrightarrow M(t_1) = M(t_2)$
 
   
 
+
+
+
 # Parsing Lex/Yacc
 
 - `parser/faustlexer.l`
@@ -264,6 +267,7 @@ Classes pour décrire et manipuler le FIR:
 - construction d'expressions (avec la classe **InstBuilder**)
 - mécanisme de **clonage** d’une expression
 - mécanisme de **visiteur** pour parcourir une expression
+- fichiers : generator/instructions.hh+cpp
 
 # Transformations FIR => FIR
 
@@ -272,15 +276,13 @@ Exemples de transformations:
 - renomage ou changement de type de variables, example avec `stack => struct`
 - suppressions de cast inutiles 
 - inlining de fonctions
-- fichiers : 
-  - compiler/generator/instructions.hh+cpp
-  - compiler/generator/fir_to_fir.hh+cpp
+- fichiers : generator/fir_to_fir.hh+cpp
 
 # Traduction signaux => FIR
 
 Les signaux de sortie sont transformés en expressions FIR avec les classes suivantes:
 
-- classe **Container** : 
+- classe **CodeContainer** : 
   - remplissage progressif du code FIR pour générer la structure DSP et les différentes fonctions (`init`, `compute`…)
   - sous-classes pour la génération des tables
 - classe **InstructionsCompiler** pour la génération de code scalaire
@@ -288,9 +290,9 @@ Les signaux de sortie sont transformés en expressions FIR avec les classes suiv
   - code vectoriel (boucles reliées par des buffers)
   - code vectoriel et parallèle : pragma pour OpenMP (C/C++) et Work Stealing Scheduler
 - fichiers : 
-  - compiler/generator/code_container.hh+cpp
-  - compiler/generator/instructions_compiler.hh+cpp
-  - compiler/generator/dag_instructions_compiler.hh+cpp
+  - generator/code_container.hh+cpp
+  - generator/instructions_compiler.hh+cpp
+  - generator/dag_instructions_compiler.hh+cpp
 
 # Génération du code par le backend choisi
 
@@ -305,15 +307,15 @@ Chaque backend traduit le code FIR dans le langage cible, en tenant compte de se
 
 Les backends textuels générent du texte (un `iostream` en C++) :
 
-- C : génération de structure de données et fonctions (fichiers dans compiler/generator/c)
+- C : génération de structure de données et fonctions (fichiers dans generator/c)
 
-- C++ : génération d’une classe (fichiers dans compiler/generator/cpp)
+- C++ : génération d’une classe (fichiers dans generator/cpp)
 
-- CSharp : génération d’une classe (fichiers dans compiler/generator/csharp)
+- CSharp : génération d’une classe (fichiers dans generator/csharp)
 
-- Rust : génération d'un type et de méthodes (fichiers dans compiler/generator/rust)
+- Rust : génération d'un type et de méthodes (fichiers dans generator/rust)
 
-- SOUL : génération d'un processor (fichiers dans compiler/generator/soul)
+- SOUL : génération d'un processor (fichiers dans generator/soul)
 
 - ...
 
@@ -323,8 +325,8 @@ Les backends textuels générent du texte (un `iostream` en C++) :
 
 Ces backends permettent de générer du code ensuite compilable en mémoire (LLVM JIT et WASM JIT) :
 
-- LLVM IR : génération d’un « module LLVM » , sous la forme de structures de données en mémoire, à l'aide des librairies LLVM (fichiers dans compiler/generator/llvm)
-- WASM : génération d’un « module WASM » (fichiers dans compiler/generator/wasm), sous la forme d'un d'un flux binaire, à l'aide de quelques structure de données supplémentaires
+- LLVM IR : génération d’un « module LLVM » , sous la forme de structures de données en mémoire, à l'aide des librairies LLVM (fichiers dans generator/llvm)
+- WASM : génération d’un « module WASM » (fichiers dans generator/wasm), sous la forme d'un flux binaire, à l'aide de quelques structure de données intermediaires complémentaires
 - ...
 
 # Génération de code pour l'embarqué
@@ -332,36 +334,28 @@ Ces backends permettent de générer du code ensuite compilable en mémoire (LLV
 Certains backends ont des modes de génération particuliers:
 
 - mode `-os` (one sample) avec :
-
-  - fonction `compute`… qui calcule un seul échantillon
-  - séparation des calculs faits au `control-rate` et au `sample-rate`
+  - fonction `compute` qui calcule un seul échantillon
+  - séparation des calculs faits au `control-rate` et au `sample-rate`, dans `compute` et `control` 
 
   
-
 # Déboggage avec le backend FIR
 
 Outil utilisé pour le déboggage du FIR et de l'implémentation des backends :
 
 - version textuelle du langage FIR :
-
   - avec type des variables (`stack, struct, global`)
   - quelques statistiques sur le code : taille du DSP, nombre d'opérations de chaque type utilisées (accès mémoire, calculs arithmétiques...)
-
-  
+-  fichiers dans generator/fir
 
 # Instrumentation avec le backend d'Interprétation
 
 Autre backend pour générer du code exécutable en mémoire:
 
 - traduction FIR => Faust Byte Code (FBC)
-
 - machine virtuelle d’interprétation du FBC (avec piles et zones mémoires DSP `integer/real`)
-
 - instrumentation du code possible : 
-
   - détection de calculs flottants problématiques (`NaN`, `INF`...) ou entiers en dehors de l'intervalle maximum, division par zéro...
-
   - accès incorrect à la mémoire : test de la correction du code généré
-
-    
+-  fichiers dans generator/interp
+   
 
