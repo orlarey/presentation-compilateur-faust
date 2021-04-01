@@ -6,11 +6,10 @@ PDF	:= $(DSP:%.dsp=%.pdf)
 
 all : $(PDF)
 
-%.pdf : %.dsp-sig.dot
-	dot -Tpdf -o "$@" "$<"
-
-%.dsp-sig.dot : %.dsp
+%.pdf : %.dsp
 	faust -sg "$(<)" > /dev/null
+	dot -Tpdf -o "$@" "$(<)-sig.dot"
+	rm "$(<)-sig.dot"
 
 clean :
 	rm -f *.svg *.pdf
