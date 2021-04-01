@@ -89,7 +89,9 @@ Propriété des arbres : $t_1 = t_2 \Leftrightarrow M(t_1) = M(t_2)$
 			body = t->getProperty(gGlobal->RECDEF);
 			return true;
 		} else {
-			return false; } }
+			return false; 
+		} 
+	}
 	
 	Tree ref(Tree id) { return tree(gGlobal->SYMREC, id); }
 	
@@ -97,6 +99,9 @@ Propriété des arbres : $t_1 = t_2 \Leftrightarrow M(t_1) = M(t_2)$
 		return isTree(t, gGlobal->SYMREC, v); }
 
   
+
+
+
 
 
 
@@ -193,6 +198,7 @@ Type d'un signal $s$ = Variabilité $\times$ Nature $\times$ Calculabilité
 
 ![](images/types-lattice2.pdf)
 
+
 # Type d'un signal, informations additionnelles
 
 - **Vectorabilité** : $V\subset\widehat{V}$ peut être calculé en parallèle ou pas
@@ -222,21 +228,27 @@ En réalité, on ne calcule pas réellement l'intervalle d'un signal récursif, 
 
 # Traitement des signaux avant la traduction en FIR
 
-    Tree L1 = deBruijn2Sym(LS);  
-    typeAnnotation(L1, gGlobal->gLocalCausalityCheck);
-    SignalPromotion SP;
-    Tree L1b = SP.mapself(L1);
-    Tree L2 = simplify(L1b);  // simplify by executing every computable operation
-    SignalConstantPropagation SK;
-    Tree L2b = SK.mapself(L2);
-    Tree L3 = privatise(L2b);  // Un-share tables with multiple writers
-    conditionAnnotation(L3);
-    recursivnessAnnotation(L3); // Annotate L3 with recursivness information
-    typeAnnotation(L3, true);   // Annotate L3 with type information
-    sharingAnalysis(L3);        // annotate L3 with sharing count
-    fOccMarkup = new old_OccMarkup(fConditionProperty);
-    fOccMarkup->mark(L3);  // annotate L3 with occurrences analysis
-    return L3;
+```
+Tree L1 = deBruijn2Sym(LS);  
+typeAnnotation(L1, gGlobal->gLocalCausalityCheck);
+SignalPromotion SP;
+Tree L1b = SP.mapself(L1);
+Tree L2 = simplify(L1b);    // simplify by executing 
+                            // every computable operation
+SignalConstantPropagation SK;
+Tree L2b = SK.mapself(L2);
+Tree L3 = privatise(L2b);   // un-share tables with 
+                            // multiple writers
+conditionAnnotation(L3);
+recursivnessAnnotation(L3); // annotate L3 with 
+                            // recursivness information
+typeAnnotation(L3, true);   // annotate L3 with 
+                            // type information
+sharingAnalysis(L3);        // annotate L3 with sharing count
+fOccMarkup = new old_OccMarkup(fConditionProperty);
+fOccMarkup->mark(L3); // annotate L3 with occurrences analysis
+return L3;
+```
 
 # Exemple de règles de normalisation
 
@@ -263,7 +275,10 @@ Langage générique intermédiaire avant la génération du code final :
 
 Classes pour décrire et manipuler le FIR:
 
-- notions de **type**, **values** (le résultat d'un calcul) et **statements** (opération à *effet de bord* )
+- notions de:
+  - **type** : class `Typed`
+  - **values** : classe `ValueInst`, le résultat des calculs et 
+  - **statements** : classe `StatementInst`, opérations à *effet de bord* 
 - construction d'expressions (avec la classe **InstBuilder**)
 - mécanisme de **clonage** d’une expression
 - mécanisme de **visiteur** pour parcourir une expression
@@ -294,6 +309,29 @@ Les signaux de sortie sont transformés en expressions FIR avec les classes suiv
   - generator/instructions_compiler.hh+cpp
   - generator/dag_instructions_compiler.hh+cpp
 
+# Compilation : dispatch par type de signal
+
+```c++
+ValueInst* InstructionsCompiler::generateCode(Tree sig)
+{
+    int i; double r;
+    Tree c, sel, x, y, z, label, id; 
+    Tree ff, largs, type, name, file, sf;
+
+    if (getUserData(sig)) {
+        return generateXtended(sig);
+    } else if (isSigInt(sig, &i)) {
+        return generateIntNumber(sig, i);
+    } else if (isSigReal(sig, &r)) {
+        return generateRealNumber(sig, r);
+    } else if (isSigInput(sig, &i)) {
+        return generateInput(sig, i);
+    } else if {
+        ...
+    }
+}
+```
+
 # Génération du code par le backend choisi
 
 Chaque backend traduit le code FIR dans le langage cible, en tenant compte de ses particularités:
@@ -308,15 +346,10 @@ Chaque backend traduit le code FIR dans le langage cible, en tenant compte de se
 Les backends textuels générent du texte (un `iostream` en C++) :
 
 - C : génération de structure de données et fonctions (fichiers dans generator/c)
-
 - C++ : génération d’une classe (fichiers dans generator/cpp)
-
 - CSharp : génération d’une classe (fichiers dans generator/csharp)
-
 - Rust : génération d'un type et de méthodes (fichiers dans generator/rust)
-
 - SOUL : génération d'un processor (fichiers dans generator/soul)
-
 - ...
 
   
