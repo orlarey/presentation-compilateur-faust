@@ -100,6 +100,7 @@ Propriété des arbres : $t_1 = t_2 \Leftrightarrow M(t_1) = M(t_2)$
 
 
 
+
 # Parsing Lex/Yacc
 
 - `parser/faustlexer.l`
@@ -325,7 +326,7 @@ Les backends textuels générent du texte (un `iostream` en C++) :
 Ces backends permettent de générer du code ensuite compilable en mémoire (LLVM JIT et WASM JIT) :
 
 - LLVM IR : génération d’un « module LLVM » , sous la forme de structures de données en mémoire, à l'aide des librairies LLVM (fichiers dans generator/llvm)
-- WASM : génération d’un « module WASM » (fichiers dans generator/wasm), sous la forme d'un d'un flux binaire, à l'aide de quelques structure de données supplémentaires
+- WASM : génération d’un « module WASM » (fichiers dans generator/wasm), sous la forme d'un flux binaire, à l'aide de quelques structure de données supplémentaires
 - ...
 
 # Génération de code pour l'embarqué
@@ -356,5 +357,5 @@ Autre backend pour générer du code exécutable en mémoire:
   - détection de calculs flottants problématiques (`NaN`, `INF`...) ou entiers en dehors de l'intervalle maximum, division par zéro...
   - accès incorrect à la mémoire : test de la correction du code généré
 -  fichiers dans generator/interp
-    
+   
 
