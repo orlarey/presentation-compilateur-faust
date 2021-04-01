@@ -98,6 +98,7 @@ Propriété des arbres : $t_1 = t_2 \Leftrightarrow M(t_1) = M(t_2)$
 
   
 
+
 # Parsing Lex/Yacc
 
 - `parser/faustlexer.l`
@@ -264,6 +265,7 @@ Classes pour décrire et manipuler le FIR:
 - construction d'expressions (avec la classe **InstBuilder**)
 - mécanisme de **clonage** d’une expression
 - mécanisme de **visiteur** pour parcourir une expression
+- fichiers : compiler/generator/instructions.hh+cpp
 
 # Transformations FIR => FIR
 
@@ -272,9 +274,7 @@ Exemples de transformations:
 - renomage ou changement de type de variables, example avec `stack => struct`
 - suppressions de cast inutiles 
 - inlining de fonctions
-- fichiers : 
-  - compiler/generator/instructions.hh+cpp
-  - compiler/generator/fir_to_fir.hh+cpp
+- fichiers : compiler/generator/fir_to_fir.hh+cpp
 
 # Traduction signaux => FIR
 
