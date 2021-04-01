@@ -326,7 +326,7 @@ Les backends textuels générent du texte (un `iostream` en C++) :
 Ces backends permettent de générer du code ensuite compilable en mémoire (LLVM JIT et WASM JIT) :
 
 - LLVM IR : génération d’un « module LLVM » , sous la forme de structures de données en mémoire, à l'aide des librairies LLVM (fichiers dans generator/llvm)
-- WASM : génération d’un « module WASM » (fichiers dans generator/wasm), sous la forme d'un flux binaire, à l'aide de quelques structure de données supplémentaires
+- WASM : génération d’un « module WASM » (fichiers dans generator/wasm), sous la forme d'un flux binaire, à l'aide de quelques structure de données intermediaires complémentaires
 - ...
 
 # Génération de code pour l'embarqué
