@@ -201,7 +201,7 @@ Type d'un signal $s$ = Variabilité $\times$ Nature $\times$ Calculabilité
 
 $[\![$ `1 : (+ : min(3)) ~ _` $]\!] = ()\rightarrow z$
 
-![](examples/ex1-annotated.pdf)
+![](images/ex1-annotated.pdf)
 
 
 Type de $z(t) : SZC\widehat{V}\widehat{B}[1,3]$
@@ -210,7 +210,7 @@ Type de $z(t) : SZC\widehat{V}\widehat{B}[1,3]$
 
 En réalité, on ne calcule pas réellement l'intervalle d'un signal récursif, on renvoie simplement $[-\infty,+\infty]$. Ce qu'il faudrait faire :
 
-![](examples/ex2-annotated.pdf)
+![](images/ex2-annotated.pdf)
 
 - $J_0=F([0,0],X_0)$, $J_1=F(J_0,X_1)$, \ldots, $J_n=F(J_{n-1},X_n)$
 - $J = \bigcup\limits_{i=0}^{\infty} J_{i}$, $X = \bigcup\limits_{i=0}^{\infty} X_{i}$
