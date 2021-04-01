@@ -280,7 +280,7 @@ Exemples de transformations:
 
 Les signaux de sortie sont transformés en expressions FIR avec les classes suivantes:
 
-- classe **Container** : 
+- classe **CodeContainer** : 
   - remplissage progressif du code FIR pour générer la structure DSP et les différentes fonctions (`init`, `compute`…)
   - sous-classes pour la génération des tables
 - classe **InstructionsCompiler** pour la génération de code scalaire
