@@ -264,8 +264,8 @@ return L3;
 
 Langage générique intermédiaire avant la génération du code final :
 
-- gestion mémoire: **variables** (`stack/struct`…), **tableaux**, **lecture/écriture**
-- **calculs arithmétiques** (unaires/binaires), fonctions externes
+- gestion mémoire: **variables** (`stack/struct/global`), **tableaux**, **lecture/écriture**
+- **opérations arithmétiques** (unaires/binaires), fonctions externes
 - structure de contrôle : `for`, `while`, `if`, `switch/case`, `select`…
 - création de **structures de données** 
 - création de **fonctions**
@@ -276,8 +276,8 @@ Langage générique intermédiaire avant la génération du code final :
 Classes pour décrire et manipuler le FIR:
 
 - notions de:
-  - **type** : class `Typed`
-  - **values** : classe `ValueInst`, le résultat des calculs et 
+  - **type** : classe `Typed`
+  - **values** : classe `ValueInst`, résultat des calculs 
   - **statements** : classe `StatementInst`, opérations à *effet de bord* 
 - construction d'expressions (avec la classe **InstBuilder**)
 - mécanisme de **clonage** d’une expression
