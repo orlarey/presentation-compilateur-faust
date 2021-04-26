@@ -373,7 +373,7 @@ Tool used for debugging FIR and backend implementation:
 
 - textual version of the FIR language :
   - with variable types (`stack, struct, global`)
-  - some statistics on the code : size of the DSP, number of operations of each type used (memory access, arithmetic calculations...)
+  - some statistics on the code: size of the DSP, number of operations of each type used (memory access, arithmetic calculations...)
 - files in generator/fir
 
 # Instrumentation with the Interpretation backend
