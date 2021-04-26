@@ -106,6 +106,7 @@ Propriété des arbres : $t_1 = t_2 \Leftrightarrow M(t_1) = M(t_2)$
 
 
 
+
 # Parsing Lex/Yacc
 
 - `parser/faustlexer.l`
@@ -181,7 +182,7 @@ Exemple :
 
 # Propagation Symbolique
 
-Le but de la propagation symbolique est d'exprimer les signaux de sortie en fonction des signaux d'entrée.
+Le but de la propagation symbolique est d'exprimer les signaux de sortie en fonction des signaux d'entrée:
 
 ![](graphs/ex2.pdf)
 
