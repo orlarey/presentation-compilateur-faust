@@ -192,7 +192,7 @@ Signal type $s$ = Variability $\times$ Nature $\times$ Calculability
 
 # Type of a signal, additional information
 
-- **Vectorability: $V\subset\widehat{V}$ can be calculated in parallel or not
+- **Vectorability**: $V\subset\widehat{V}$ can be calculated in parallel or not
 - **Boolean** : $B\subset\widehat{B}$ represents a Boolean signal or not
 - **Interval** : signal values $s(t)$ are contained in the $[l,h]$:  $\forall t\in\mathbb{N}, l \leq s(t) \leq h$ interval
 
@@ -203,7 +203,7 @@ $[\![$ `1 : (+ : min(3)) ~ _` $]\!] = ()\rightarrow z$
 ![](images/ex1-annotated.pdf)
 
 
-Type de $z(t) : SZC\widehat{V}\widehat{B}[1,3]$
+Type of $z(t) : SZC\widehat{V}\widehat{B}[1,3]$
 
 # Interval of a recursive signal
 
@@ -246,7 +246,7 @@ return L3;
 - `0@d` $\rightarrow$ `0`
 - `(k*s)@d` $\rightarrow$ `k*(s@d)`
 - `(s/k)@d` $\rightarrow$ `(s@d)/k`
-- `(s@n)@m` $\rightarrow$ `s@(n+m)`, si `n` est constant
+- `(s@n)@m` $\rightarrow$ `s@(n+m)`, if `n` is constant
 - `(s+s)` $\rightarrow$ `2*s`
 - `(s*s)` $\rightarrow$ `s^2`
 
@@ -255,7 +255,7 @@ return L3;
 Generic intermediate language before final code generation :
 
 - memory managment: **variables** (`stack/struct/global`), **arrays**, **load/store**
-- **arithmétic operators** (unary/binary, external functions
+- **arithmetic operators** (unary/binary, external functions
 - control structures: `for`, `while`, `if`, `switch/case`, `select`…
 - **data structure** construction
 - **functions** creation
@@ -336,7 +336,7 @@ Each backend translates the FIR code into the target language, taking into accou
 Textual backends generate text (an `iostream` in C++) :
 
 - C: data structure and function generation (files in generator/c)
--  C++: generation of a class (files in generator/cpp)
+- C++: generation of a class (files in generator/cpp)
 - CSharp: generation of a class (files in generator/csharp)
 - Rust: generation of a type and methods (files in generator/rust)
 - SOUL: generation of a processor (files in generator/soul)

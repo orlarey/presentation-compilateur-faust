@@ -106,7 +106,7 @@ Propriété des arbres : $t_1 = t_2 \Leftrightarrow M(t_1) = M(t_2)$
 - `libcode.cpp/parseSourceFiles()`
 - `parser/sourcereader.hh/SourceReader`
 - environnement
-- chargeur récursif, utilisation des url
+- chargeur récursif, utilisation des URLs
 
 # Parsing
 
