@@ -21,7 +21,7 @@ toc: false
 - Internal representations based as non-mutables trees and hash-consing
 - Lex/Yacc parsing 
 - Program evaluation as a circuit of signals processors 
--  Symbolic propagation of signals through the circuit
+- Symbolic propagation of signals through the circuit
 - Signals normalisation and optimisation
 - Interval calculus and signal typing 
 - Signals translation in imperative code  (FIR)
@@ -31,11 +31,11 @@ toc: false
 
 Non-mutables trees, hash-consing, DAG, mutable properties. 
 
-Trees properties : $t_1 = t_2 \Leftrightarrow M(t_1) = M(t_2)$ 
+Trees properties: $t_1 = t_2 \Leftrightarrow M(t_1) = M(t_2)$ 
 
-- symbols : tlib/symbol.hh+cpp
-- nodes : tlib/node.hh+cpp
-- trees : tlib/tree.hh+cpp, 2 types de recursivity  ( Bruijn +  symbolic)
+- symbols: tlib/symbol.hh+cpp
+- nodes: tlib/node.hh+cpp
+- trees: tlib/tree.hh+cpp, 2 types of recursivity (Bruijn + symbolic)
 - constructors
 - destructors
 - properties
@@ -56,7 +56,6 @@ Trees properties : $t_1 = t_2 \Leftrightarrow M(t_1) = M(t_2)$
 
 # Trees:  _de Bruijn_ recursivity
 
-
 	Tree rec(Tree body)
 	{    return tree(gGlobal->DEBRUIJN, body); }
 	
@@ -75,7 +74,6 @@ Trees properties : $t_1 = t_2 \Leftrightarrow M(t_1) = M(t_2)$
 			return false;
 		}
 	}
-
 
 # Trees: _symbolic_ recursivity
 
@@ -99,9 +97,6 @@ Trees properties : $t_1 = t_2 \Leftrightarrow M(t_1) = M(t_2)$
 		return isTree(t, gGlobal->SYMREC, v); }
 
   
-
-
-
 #  Lex/Yacc Parsing
 
 - `parser/faustlexer.l`
@@ -109,7 +104,7 @@ Trees properties : $t_1 = t_2 \Leftrightarrow M(t_1) = M(t_2)$
 - `libcode.cpp/parseSourceFiles()`
 - `parser/sourcereader.hh/SourceReader`
 - environment
-- Recursive loader, using URLs
+- recursive loader, using URLs
 
 # Parsing
 
@@ -347,8 +342,6 @@ Textual backends generate text (an `iostream` in C++) :
 - SOUL: generation of a processor (files in generator/soul)
 - ...
 
-  
-
 # Others backends
 
 These backends allow to generate code that can then be compiled in memory (LLVM JIT and WASM JIT):
@@ -362,10 +355,9 @@ These backends allow to generate code that can then be compiled in memory (LLVM 
 Some backends have particular generation modes:
 
 - `-os` (one sample) mode with:
-  
   -  a `compute` function that computes a single sample
 - separation of computations done at `control-rate` and `sample-rate`, in `compute` and `control` 
-  
+
   
 # Debugging with the FIR backend
 

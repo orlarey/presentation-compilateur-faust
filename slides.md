@@ -99,14 +99,6 @@ Propriété des arbres : $t_1 = t_2 \Leftrightarrow M(t_1) = M(t_2)$
 		return isTree(t, gGlobal->SYMREC, v); }
 
   
-
-
-
-
-
-
-
-
 # Parsing Lex/Yacc
 
 - `parser/faustlexer.l`
@@ -114,7 +106,7 @@ Propriété des arbres : $t_1 = t_2 \Leftrightarrow M(t_1) = M(t_2)$
 - `libcode.cpp/parseSourceFiles()`
 - `parser/sourcereader.hh/SourceReader`
 - environnement
-- Chargeur récursif, utilisation des url
+- chargeur récursif, utilisation des url
 
 # Parsing
 
@@ -199,20 +191,17 @@ Type d'un signal $s$ = Variabilité $\times$ Nature $\times$ Calculabilité
 
 ![](images/types-lattice2.pdf)
 
-
 # Type d'un signal, informations additionnelles
 
 - **Vectorabilité** : $V\subset\widehat{V}$ peut être calculé en parallèle ou pas
 - **Booléen** : $B\subset\widehat{B}$ représente un signal booléen ou pas
 - **Intervalle** : les valeurs du signal $s(t)$ sont contenues dans l'intervalle $[l,h]$:  $\forall t\in\mathbb{N}, l \leq s(t) \leq h$
   
-
 # Type du signal produit par `(1 : (+ : min(3)) ~ _)`
 
 $[\![$ `1 : (+ : min(3)) ~ _` $]\!] = ()\rightarrow z$
 
 ![](images/ex1-annotated.pdf)
-
 
 Type de $z(t) : SZC\widehat{V}\widehat{B}[1,3]$
 
@@ -353,8 +342,6 @@ Les backends textuels générent du texte (un `iostream` en C++) :
 - SOUL : génération d'un processor (fichiers dans generator/soul)
 - ...
 
-  
-
 # Autres backends
 
 Ces backends permettent de générer du code ensuite compilable en mémoire (LLVM JIT et WASM JIT) :
@@ -371,7 +358,7 @@ Certains backends ont des modes de génération particuliers:
   - fonction `compute` qui calcule un seul échantillon
   - séparation des calculs faits au `control-rate` et au `sample-rate`, dans `compute` et `control` 
 
-  
+
 # Déboggage avec le backend FIR
 
 Outil utilisé pour le déboggage du FIR et de l'implémentation des backends :
