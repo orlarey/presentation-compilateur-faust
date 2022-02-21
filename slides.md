@@ -255,7 +255,7 @@ return L3;
 Langage générique intermédiaire avant la génération du code final :
 
 - gestion mémoire: **variables** (`stack/struct/global`), **tableaux**, **lecture/écriture**
-- **opérations arithmétiques** (unaires/binaires), fonctions externes
+- **opérations arithmétiques** (unaires/binaires), fonctions externes)
 - structure de contrôle : `for`, `while`, `if`, `switch/case`, `select`…
 - création de **structures de données** 
 - création de **fonctions**

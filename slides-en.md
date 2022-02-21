@@ -24,7 +24,7 @@ toc: false
 - Symbolic propagation of signals through the circuit
 - Signals normalisation and optimisation
 - Interval calculus and signal typing 
-- Signals translation in imperative code  (FIR)
+- Signals translation in imperative code (FIR)
 - Code generation by the chosen backend
 
 # Trees
@@ -255,7 +255,7 @@ return L3;
 Generic intermediate language before final code generation :
 
 - memory managment: **variables** (`stack/struct/global`), **arrays**, **load/store**
-- **arithmetic operators** (unary/binary, external functions
+- **arithmetic operators** (unary/binary, external functions)
 - control structures: `for`, `while`, `if`, `switch/case`, `select`…
 - **data structure** construction
 - **functions** creation
